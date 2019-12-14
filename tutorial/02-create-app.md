@@ -2,17 +2,16 @@
 
 Para empezar, cree un nuevo proyecto nativo de reAct.
 
-1. Abra la interfaz de la línea de comandos (CLI) en un directorio donde desee crear el proyecto. Ejecute el siguiente comando para instalar la herramienta [reAct-Native-CLI](https://github.com/facebook/react-native) y crear un nuevo proyecto nativo reAct.
+1. Abra la interfaz de la línea de comandos (CLI) en un directorio donde desee crear el proyecto. Ejecute el siguiente comando para ejecutar la herramienta [reAct-Native-CLI](https://github.com/facebook/react-native) y cree un nuevo proyecto nativo reAct.
 
     ```Shell
-    npm install -g react-native-cli
-    react-native init GraphTutorial
+    npx react-native init GraphTutorial
     ```
 
 1. **Opcional:** Ejecute el proyecto para comprobar que el entorno de desarrollo está configurado correctamente. En la CLI, cambie el directorio al directorio **GraphTutorial** que acaba de crear y ejecute uno de los siguientes comandos.
 
-    - Para iOS:`react-native run-ios`
-    - Para Android: iniciar una instancia del emulador de Android y ejecutar`react-native run-android`
+    - Para iOS:`npx react-native run-ios`
+    - Para Android: iniciar una instancia del emulador de Android y ejecutar`npx react-native run-android`
 
 ## <a name="install-dependencies"></a>Instalar dependencias
 
@@ -29,10 +28,9 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
 1. Ejecute el comando siguiente.
 
     ```Shell
-    npm install react-navigation@3.11.1 react-native-gesture-handler@1.3.0 react-native-reanimated@1.1.0
-    npm install react-native-elements@1.1.0 react-native-vector-icons@6.6.0 moment@2.24.0
-    npm install react-native-app-auth@4.4.0 @microsoft/microsoft-graph-client@1.7.0
-    react-native link react-native-vector-icons
+    npm install react-navigation@3.11.1 react-native-gesture-handler@1.5.2 react-native-reanimated@1.4.0
+    npm install react-native-elements@1.2.7 react-native-vector-icons@6.6.0 moment@2.24.0
+    npm install react-native-app-auth@4.4.0 @microsoft/microsoft-graph-client@2.0.0
     ```
 
 ### <a name="link-and-configure-dependencies-for-ios"></a>Vincular y configurar dependencias para iOS
@@ -45,6 +43,29 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
 
     ```Shell
     pod install
+    ```
+
+1. Abra el archivo **GraphTutorial/iOS/GraphTutorial/info. plist** en un editor de texto. Agregue la siguiente línea justo antes de `</dict>` la última línea del archivo.
+
+    ```xml
+    <key>UIAppFonts</key>
+    <array>
+      <string>AntDesign.ttf</string>
+      <string>Entypo.ttf</string>
+      <string>EvilIcons.ttf</string>
+      <string>Feather.ttf</string>
+      <string>FontAwesome.ttf</string>
+      <string>FontAwesome5_Brands.ttf</string>
+      <string>FontAwesome5_Regular.ttf</string>
+      <string>FontAwesome5_Solid.ttf</string>
+      <string>Foundation.ttf</string>
+      <string>Ionicons.ttf</string>
+      <string>MaterialIcons.ttf</string>
+      <string>MaterialCommunityIcons.ttf</string>
+      <string>SimpleLineIcons.ttf</string>
+      <string>Octicons.ttf</string>
+      <string>Zocial.ttf</string>
+    </array>
     ```
 
 1. Abra el archivo **GraphTutorial/iOS/GraphTutorial/AppDelegate. h** en un editor de texto. Reemplace su contenido por lo siguiente.
@@ -76,7 +97,7 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
     ]
     ```
 
-1. Guarde el archivo. La `defaultConfig` entrada debe ser similar a la siguiente.
+    La `defaultConfig` entrada debe ser similar a la siguiente.
 
     ```Gradle
     defaultConfig {
@@ -90,6 +111,14 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
         ]
     }
     ```
+
+1. Agregue la siguiente línea al final del archivo.
+
+    ```Gradle
+    apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+    ```
+
+1. Guarde el archivo.
 
 ## <a name="design-the-app"></a>Diseñar la aplicación
 
@@ -355,6 +384,9 @@ En esta sección, creará un menú para la aplicación y actualizará la aplicac
       }
     });
     ```
+
+1. Cree un nuevo directorio en el directorio **GraphTutorial** denominado **images**.
+1. Agregue una imagen de perfil predeterminada con el nombre **no-Profile-PIC. png** en este directorio. Puede usar cualquier imagen que quiera o usar la que se [muestra en este ejemplo](https://github.com/microsoftgraph/msgraph-training-react-native/blob/master/demos/01-create-app/GraphTutorial/images/no-profile-pic.png).
 
 1. Abra el archivo **GraphTutorial/app. js** y reemplace todo el contenido por lo siguiente.
 
