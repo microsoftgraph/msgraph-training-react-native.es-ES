@@ -10,8 +10,8 @@ Para empezar, cree un nuevo proyecto nativo de reAct.
 
 1. **Opcional:** Ejecute el proyecto para comprobar que el entorno de desarrollo está configurado correctamente. En la CLI, cambie el directorio al directorio **GraphTutorial** que acaba de crear y ejecute uno de los siguientes comandos.
 
-    - Para iOS:`npx react-native run-ios`
-    - Para Android: iniciar una instancia del emulador de Android y ejecutar`npx react-native run-android`
+    - Para iOS: `npx react-native run-ios`
+    - Para Android: iniciar una instancia del emulador de Android y ejecutar `npx react-native run-android`
 
 ## <a name="install-dependencies"></a>Instalar dependencias
 
@@ -19,21 +19,25 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
 
 - [reAct-navegación](https://reactnavigation.org) para controlar la navegación entre vistas en la aplicación.
 - [reAct-Native-gesto-controlador](https://github.com/kmagiera/react-native-gesture-handler), [reAct-nativo-área-seguridad-área-contexto](https://github.com/th3rdwave/react-native-safe-area-context), [reAct-pantallas nativas](https://github.com/kmagiera/react-native-screens), [reAct-nativo-reanimate](https://github.com/kmagiera/react-native-reanimated)y [vista enmascarada](https://github.com/react-native-community/react-native-masked-view) requerida por reAct-Navigation.
-- [reAct-Native-Elements](https://react-native-training.github.io/react-native-elements/docs/getting_started.html) y [reAct-Native-vector-Icons](https://github.com/oblador/react-native-vector-icons) para proporcionar iconos para la interfaz de usuario.
+- [reAct-Native-Elements](https://reactnativeelements.com/docs/) y [reAct-Native-vector-Icons](https://github.com/oblador/react-native-vector-icons) para proporcionar iconos para la interfaz de usuario.
 - [reAct-Native-App-auth](https://github.com/FormidableLabs/react-native-app-auth) para controlar la autenticación y la administración de tokens.
-- [almacenamiento asincrónico](https://github.com/react-native-community/react-native-async-storage) para proporcionar almacenamiento para los tokens.
+- [almacenamiento asincrónico](https://react-native-async-storage.github.io/async-storage/docs/install) para proporcionar almacenamiento para los tokens.
+- [DateTimePicker](https://github.com/react-native-datetimepicker/datetimepicker) para agregar selectores de fecha y hora a la interfaz de usuario.
 - [momento](https://momentjs.com) para controlar el análisis y la comparación de fechas y horas.
+- [Windows-IANA](https://github.com/rubenillodo/windows-iana) para traducir zonas horarias de Windows al formato IANA.
 - [Microsoft-Graph-Client](https://github.com/microsoftgraph/msgraph-sdk-javascript) para realizar llamadas a Microsoft Graph.
 
 1. Abra la CLI en el directorio raíz del proyecto nativo reAct.
 1. Ejecute el comando siguiente.
 
     ```Shell
-    npm install @react-navigation/native@5.1.5 @react-navigation/drawer@5.4.1 @react-navigation/stack@5.2.10
-    npm install @react-native-community/masked-view@0.1.7 react-native-safe-area-context@0.7.3
-    npm install react-native-reanimated@1.8.0 react-native-screens@2.4.0 @react-native-community/async-storage@1.9.0
-    npm install react-native-elements@1.2.7 react-native-vector-icons@6.6.0 react-native-gesture-handler@1.6.1
-    npm install react-native-app-auth@5.1.1 moment@2.24.0 @microsoft/microsoft-graph-client@2.0.0
+    npm install @react-navigation/native@5.8.8 @react-navigation/drawer@5.11.1 @react-navigation/stack@5.12.5
+    npm install @react-native-community/masked-view@0.1.10 react-native-safe-area-context@3.1.8 windows-iana
+    npm install react-native-reanimated@1.13.1 react-native-screens@2.14.0 @react-native-async-storage/async-storage@1.13.2
+    npm install react-native-elements@2.3.2 react-native-vector-icons@7.1.0 react-native-gesture-handler@1.8.0
+    npm install react-native-app-auth@6.0.1 moment@2.29.1 moment-timezone @microsoft/microsoft-graph-client@2.1.1
+    npm install @react-native-community/datetimepicker@3.0.4
+    npm install @microsoft/microsoft-graph-types --save-dev
     ```
 
 ### <a name="link-and-configure-dependencies-for-ios"></a>Vincular y configurar dependencias para iOS
@@ -48,7 +52,7 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
     pod install
     ```
 
-1. Abra el archivo **GraphTutorial/iOS/GraphTutorial/info. plist** en un editor de texto. Agregue la siguiente línea justo antes de `</dict>` la última línea del archivo.
+1. Abra el archivo **GraphTutorial/iOS/GraphTutorial/info. plist** en un editor de texto. Agregue la siguiente línea justo antes de la última `</dict>` línea del archivo.
 
     ```xml
     <key>UIAppFonts</key>
@@ -81,7 +85,7 @@ Antes de continuar, instale algunas dependencias adicionales que usará más ade
 > Si no tiene como objetivo Android, puede omitir esta sección.
 
 1. Abra el archivo **GraphTutorial/Android/App/Build. Gradle** en un editor.
-1. Busque la `defaultConfig` entrada y agregue la siguiente propiedad en `defaultConfig`.
+1. Busque la `defaultConfig` entrada y agregue la siguiente propiedad en `defaultConfig` .
 
     ```Gradle
     manifestPlaceholders = [
@@ -109,77 +113,24 @@ La aplicación usará un [cajón de navegación](https://reactnavigation.org/doc
 
 En esta sección, creará las vistas de la aplicación para admitir un [flujo de autenticación](https://reactnavigation.org/docs/auth-flow).
 
-1. Abra **GraphTutorial/index. js** y agregue lo siguiente a la parte superior del archivo, antes de cualquier `import` otra instrucción.
+1. Abra **GraphTutorial/index.js** y agregue lo siguiente a la parte superior del archivo, antes de cualquier otra `import` instrucción.
 
     ```javascript
     import 'react-native-gesture-handler';
     ```
 
+1. Cree un archivo nuevo en el directorio **GraphTutorial** denominado **contexto. TSX** y agregue el código siguiente.
+
+    :::code language="typescript" source="../demo/GraphTutorial/AuthContext.tsx" id="AuthContextSnippet":::
+
+1. Cree un nuevo archivo en el directorio **GraphTutorial** denominado **UserContext. TSX** y agregue el código siguiente.
+
+    :::code language="typescript" source="../demo/GraphTutorial/UserContext.tsx" id="UserContextSnippet":::
+
 1. Cree un nuevo directorio en el directorio **GraphTutorial** denominado **pantallas**.
 1. Cree un archivo nuevo en el directorio **GraphTutorial/Screens** denominado **HomeScreen. TSX**. Agregue el siguiente código al archivo.
 
-    ```typescript
-    import React from 'react';
-    import {
-      ActivityIndicator,
-      Alert,
-      StyleSheet,
-      Text,
-      View,
-    } from 'react-native';
-    import { createStackNavigator } from '@react-navigation/stack';
-    import { DrawerToggle, headerOptions } from '../menus/HeaderComponents';
-
-    const Stack = createStackNavigator();
-    const UserState = React.createContext({userLoading: true, userName: ''});
-
-    type HomeScreenState = {
-      userLoading: boolean;
-      userName: string;
-    }
-
-    const HomeComponent = () => {
-      const userState = React.useContext(UserState);
-
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator animating={userState.userLoading} size='large' />
-          {userState.userLoading ? null: <Text>Hello {userState.userName}!</Text>}
-        </View>
-      );
-    }
-
-    export default class HomeScreen extends React.Component {
-
-      state: HomeScreenState = {
-        userLoading: true,
-        userName: ''
-      };
-
-      render() {
-        return (
-          <UserState.Provider value={this.state}>
-              <Stack.Navigator screenOptions={headerOptions}>
-                <Stack.Screen name='Home'
-                  component={HomeComponent}
-                  options={{
-                    title: 'Welcome',
-                    headerLeft: () => <DrawerToggle/>
-                  }} />
-              </Stack.Navigator>
-          </UserState.Provider>
-        );
-      }
-    }
-
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }
-    });
-    ```
+    :::code language="typescript" source="../demo/GraphTutorial/screens/HomeScreen.tsx" id="HomeScreenSnippet":::
 
 1. Cree un archivo nuevo en el directorio **GraphTutorial/Screens** denominado **CalendarScreen. TSX**. Agregue el siguiente código al archivo.
 
@@ -191,7 +142,6 @@ En esta sección, creará las vistas de la aplicación para admitir un [flujo de
       View,
     } from 'react-native';
     import { createStackNavigator } from '@react-navigation/stack';
-    import { DrawerToggle, headerOptions } from '../menus/HeaderComponents';
 
     const Stack = createStackNavigator();
 
@@ -206,12 +156,11 @@ En esta sección, creará las vistas de la aplicación para admitir un [flujo de
 
       render() {
         return (
-          <Stack.Navigator screenOptions={ headerOptions }>
+          <Stack.Navigator>
             <Stack.Screen name='Calendar'
               component={ CalendarComponent }
               options={{
-                title: 'Calendar',
-                headerLeft: () => <DrawerToggle/>
+                headerShown: false
               }} />
           </Stack.Navigator>
         );
@@ -238,32 +187,30 @@ En esta sección, creará las vistas de la aplicación para admitir un [flujo de
       StyleSheet,
       View,
     } from 'react-native';
-    import { NavigationContext } from '@react-navigation/native';
+    import { ParamListBase } from '@react-navigation/native';
+    import { StackNavigationProp } from '@react-navigation/stack'
 
-    export default class SignInScreen extends React.Component {
-      static contextType = NavigationContext;
+    import { AuthContext } from '../AuthContext';
 
-      static navigationOptions = {
-        title: 'Please sign in',
-      };
+    type SignInProps = {
+      navigation: StackNavigationProp<ParamListBase>;
+    };
+
+    export default class SignInScreen extends React.Component<SignInProps> {
+      static contextType = AuthContext;
 
       _signInAsync = async () => {
-        const navigation = this.context;
-
-        // TEMPORARY
-        navigation.reset({
-          index: 0,
-          routes: [ { name: 'Main' } ]
-        });
+        await this.context.signIn();
       };
 
-      render() {
-        const navigation = this.context;
-        navigation.setOptions({
+      componentDidMount() {
+        this.props.navigation.setOptions({
           title: 'Please sign in',
           headerShown: true
         });
+      }
 
+      render() {
         return (
           <View style={styles.container}>
             <Button title='Sign In' onPress={this._signInAsync}/>
@@ -290,9 +237,6 @@ En esta sección, creará las vistas de la aplicación para admitir un [flujo de
 En esta sección, creará un menú para la aplicación y actualizará la aplicación para que use reAct-Navigation para moverse entre las pantallas.
 
 1. Cree un nuevo directorio en el directorio **GraphTutorial** denominado **menús**.
-1. Cree un archivo nuevo en el directorio **GraphTutorial o menus** denominado **HeaderComponents. TSX**. Agregue el siguiente código al archivo.
-
-    :::code language="typescript" source="../demo/GraphTutorial/menus/HeaderComponents.tsx" id="HeaderComponentSnippet":::
 
 1. Cree un archivo nuevo en el directorio **GraphTutorial o menus** denominado **DrawerMenu. TSX**. Agregue el siguiente código al archivo.
 
@@ -313,8 +257,11 @@ En esta sección, creará un menú para la aplicación y actualizará la aplicac
       DrawerItemList,
       DrawerContentComponentProps
     } from '@react-navigation/drawer';
-    import { NavigationContext } from '@react-navigation/native';
+    import { ParamListBase } from '@react-navigation/native';
+    import { StackNavigationProp } from '@react-navigation/stack'
 
+    import { AuthContext } from '../AuthContext';
+    import { UserContext } from '../UserContext';
     import HomeScreen from '../screens/HomeScreen';
     import CalendarScreen from '../screens/CalendarScreen';
 
@@ -327,10 +274,8 @@ En esta sección, creará un menú para la aplicación y actualizará la aplicac
       signOut: () => void;
     }
 
-    type DrawerMenuState = {
-      userName: string;
-      userEmail: string;
-      userPhoto: ImageSourcePropType;
+    type DrawerMenuProps = {
+      navigation: StackNavigationProp<ParamListBase>;
     }
 
     const CustomDrawerContent: FC<CustomDrawerContentProps> = props => (
@@ -347,49 +292,59 @@ En esta sección, creará un menú para la aplicación y actualizará la aplicac
       </DrawerContentScrollView>
     );
 
-    export default class DrawerMenuContent extends React.Component {
-      static contextType = NavigationContext;
+    export default class DrawerMenuContent extends React.Component<DrawerMenuProps> {
+      static contextType = AuthContext;
 
-      state: DrawerMenuState = {
+      state = {
         // TEMPORARY
-        userName: 'Adele Vance',
+        userLoading: true,
+        userFirstName: 'Adele',
+        userFullName: 'Adele Vance',
         userEmail: 'adelev@contoso.com',
+        userTimeZone: 'UTC',
         userPhoto: require('../images/no-profile-pic.png')
       }
 
       _signOut = async () => {
-        const navigation = this.context;
-        // Sign out
-        // TEMPORARY
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'SignIn' }]
+        this.context.signOut();
+      }
+
+      async componentDidMount() {
+        this.props.navigation.setOptions({
+          headerShown: false,
         });
       }
 
       render() {
-        const navigation = this.context;
-        navigation.setOptions({
-          headerShown: false,
-        });
+        const userLoaded = !this.state.userLoading;
 
         return (
-          <Drawer.Navigator
-            drawerType='front'
-            drawerContent={props => (
-              <CustomDrawerContent {...props}
-                userName={this.state.userName}
-                userEmail={this.state.userEmail}
-                userPhoto={this.state.userPhoto}
-                signOut={this._signOut} />
-            )}>
-            <Drawer.Screen name='Home'
-              component={HomeScreen}
-              options={{drawerLabel: 'Home'}} />
-            <Drawer.Screen name='Calendar'
-              component={CalendarScreen}
-              options={{drawerLabel: 'Calendar'}} />
-          </Drawer.Navigator>
+          <UserContext.Provider value={this.state}>
+            <Drawer.Navigator
+              drawerType='front'
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: '#276b80'
+                },
+                headerTintColor: 'white'
+              }}
+              drawerContent={props => (
+                <CustomDrawerContent {...props}
+                  userName={this.state.userFullName}
+                  userEmail={this.state.userEmail}
+                  userPhoto={this.state.userPhoto}
+                  signOut={this._signOut} />
+              )}>
+              <Drawer.Screen name='Home'
+                component={HomeScreen}
+                options={{drawerLabel: 'Home', headerTitle: 'Welcome'}} />
+              { userLoaded &&
+                <Drawer.Screen name='Calendar'
+                  component={CalendarScreen}
+                  options={{drawerLabel: 'Calendar'}} />
+              }
+            </Drawer.Navigator>
+          </UserContext.Provider>
         );
       }
     }
@@ -418,11 +373,97 @@ En esta sección, creará un menú para la aplicación y actualizará la aplicac
     ```
 
 1. Cree un nuevo directorio en el directorio **GraphTutorial** denominado **images**.
-1. Agregue una imagen de perfil predeterminada con el nombre **no-Profile-PIC. png** en este directorio. Puede usar cualquier imagen que quiera o usar la que se [muestra en este ejemplo](https://github.com/microsoftgraph/msgraph-training-react-native/blob/master/demo/GraphTutorial/images/no-profile-pic.png).
+1. Agregue una imagen de perfil predeterminada con el nombre **no-profile-pic.png** en este directorio. Puede usar cualquier imagen que quiera o usar la que se [muestra en este ejemplo](https://github.com/microsoftgraph/msgraph-training-react-native/blob/master/demo/GraphTutorial/images/no-profile-pic.png).
 
 1. Abra el archivo **GraphTutorial/app. TSX** y reemplace todo el contenido por lo siguiente.
 
-    :::code language="typescript" source="../demo/GraphTutorial/App.tsx" id="AppSnippet":::
+    ```typescript
+    // Adapted from https://reactnavigation.org/docs/auth-flow
+    import * as React from 'react';
+    import { NavigationContainer, ParamListBase } from '@react-navigation/native';
+    import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack'
+
+    import { AuthContext } from './AuthContext';
+    import SignInScreen from './screens/SignInScreen';
+    import DrawerMenuContent from './menus/DrawerMenu'
+    import AuthLoadingScreen from './screens/AuthLoadingScreen';
+
+    const Stack = createStackNavigator();
+
+    type Props = {
+      navigation: StackNavigationProp<ParamListBase>;
+    };
+
+    export default function App({ navigation }: Props) {
+      const [state, dispatch] = React.useReducer(
+        (prevState: any, action: any) => {
+          switch (action.type) {
+            case 'RESTORE_TOKEN':
+              return {
+                ...prevState,
+                userToken: action.token,
+                isLoading: false
+              };
+            case 'SIGN_IN':
+              return {
+                ...prevState,
+                isSignOut: false,
+                userToken: action.token
+              }
+            case 'SIGN_OUT':
+              return {
+                ...prevState,
+                isSignOut: true,
+                userToken: null
+              }
+          }
+        },
+        {
+          isLoading: true,
+          isSignOut: false,
+          userToken: null
+        }
+      );
+
+      React.useEffect(() => {
+        const bootstrapAsync = async () => {
+          let userToken = null;
+          // TEMPORARY
+          dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+        };
+
+        bootstrapAsync();
+      }, []);
+
+      const authContext = React.useMemo(
+        () => ({
+          signIn: async () => {
+            dispatch({ type: 'SIGN_IN', token: 'placeholder-token' });
+          },
+          signOut: async () => {
+            dispatch({ type: 'SIGN_OUT' });
+          }
+        }),
+        []
+      );
+
+      return (
+        <AuthContext.Provider value={authContext}>
+          <NavigationContainer>
+            <Stack.Navigator>
+              {state.isLoading ? (
+                <Stack.Screen name="Loading" component={AuthLoadingScreen} />
+              ) : state.userToken == null ? (
+                <Stack.Screen name="SignIn" component={SignInScreen} />
+              ) : (
+                <Stack.Screen name="Main" component={DrawerMenuContent} />
+              )}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </AuthContext.Provider>
+      );
+    }
+    ```
 
 1. Guarde todos los cambios.
 

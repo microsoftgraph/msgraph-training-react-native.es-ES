@@ -22,10 +22,10 @@ También debe tener una cuenta de Microsoft personal con un buzón de correo en 
 > [!NOTE]
 > Este tutorial se ha escrito con reaccionar la CLI nativa, que tiene requisitos previos específicos según el sistema operativo y las plataformas de destino. Consulte [reaccionar nativo de introducción](https://reactnative.dev/docs/environment-setup) para obtener instrucciones sobre cómo configurar el equipo de desarrollo. A continuación se enumeran las versiones usadas para este tutorial. Los pasos de esta guía pueden funcionar con otras versiones, pero no se han probado.
 >
-> - Android Studio versión 3.6.2 con el SDK de Android 9,0
+> - Android Studio versión 4,1 con Android 9,0 SDK
 > - Kit de desarrollo de Java versión 12.0.2
-> - Versión 11,4 de Xcode
-> - Node. js versión 12.16.2
+> - Versión 12,1 de Xcode
+> - Node.js versión 14.15.0
 
 ## <a name="feedback"></a>Comentarios
 
